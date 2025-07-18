@@ -1,0 +1,36 @@
+name: test-dependencies
+on: [push]
+
+jobs:
+  check-deps:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: snapcore/action-build@v1
+      id: snapcraft
+      with:
+        path: test_data/test-dependencies-stating
+    - name: Check deps
+      run: |
+          set -x
+          #for pkg in $(<snapcraft.yaml yq -re '.parts.debs."stage-packages".[]'); do
+          #  apt depends --no-recommends --no-suggests $pkg
+          #done
+
+
+          sqDir=$(mktemp -d)
+          unsquashfs -d "$sqDir" ${{ steps.snapcraft.outputs.snap }}
+
+          if ! find "$sqDir" -name 'libXdamage.so.*' | grep .; then
+            >&2 echo "Could not find direct dependency of libxdamage-dev."
+            exitCode=1
+
+          fi
+          if ! find "$sqDir" -name 'libX11.so.*' | grep .; then
+            >&2 echo "Could not find indirect dependency of libxdamage-dev."
+            exitCode=1
+          fi
+
+          exit $exitCode
+
+            

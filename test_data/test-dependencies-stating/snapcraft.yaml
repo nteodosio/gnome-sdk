@@ -1,0 +1,17 @@
+name: test-dependencies-staging
+version: "1"
+confinement: strict
+grade: stable
+base: core24
+summary: Test staged dependencies
+description: |
+  There is reason to believe that Snapcraft has not been consistent in regards
+  to staging dependencies of packages listed in stage-packages. For example,
+  staging a foo-dev might pull foo as a dependency but in the packed the foo
+  files might be missing.
+
+parts:
+  debs:
+    plugin: nil
+    stage-packages:
+      - libxdamage-dev
