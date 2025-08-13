@@ -387,6 +387,7 @@ parts:
       export PATH=$PATH:$HOME/.cargo/bin
       ~/.cargo/bin/cargo install cargo-c --locked
       cp ~/.cargo/bin/* /usr/local/bin
+      patch -p1 < $CRAFT_PROJECT_DIR/patches/librsvg-offline-cargo.patch
     override-stage: |
       craftctl default
       sed -i 's#prefix=$CRAFT_STAGE${pcfiledir}#prefix=${pcfiledir}#' $CRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pkgconfig/librsvg-2.0.pc

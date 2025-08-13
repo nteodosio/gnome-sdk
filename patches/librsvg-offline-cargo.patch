@@ -1,0 +1,8 @@
+--- a/meson/cargo_wrapper.py
++++ b/meson/cargo_wrapper.py
+@@ -180,4 +180,5 @@
+     cargo_cmd.extend(['--target', args.target])
+ 
++cargo_cmd.extend(['--offline'])
+ if features:
+     cargo_cmd.extend(["--features", ",".join(features)])
